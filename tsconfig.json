@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "target": "es2015",
+        "module": "none",
+        "outFile": "./dist/vd.js"
+    },
+    "files": [
+        "src/index.ts"
+    ]
+}
