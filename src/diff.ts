@@ -1,8 +1,8 @@
-import { VNode, Patch, Index, Attr } from './model'
+import { VNode, Patchs, Index, Attr } from './model'
 import * as util from './util'
 
-export function diff (oldNode: VNode, newNode: VNode): Patch[] {
-    const patch: Patch[] = []
+export function diff (oldNode: VNode, newNode: VNode): Patchs {
+    const patch: Patchs = {}
     const idx: Index = { idx: -1 }
 
     dfs(oldNode, newNode, idx, patch)
@@ -10,12 +10,13 @@ export function diff (oldNode: VNode, newNode: VNode): Patch[] {
     return patch
 }
 
-function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patch[]) {
+function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs) {
     idx.idx++
+    const currentPatch = patch[idx.idx] = []
     // text node
     if (util.isString(oldNode) && util.isString(newNode)) {
         if (oldNode !== newNode) {
-            patch.push({
+            currentPatch.push({
                 index: idx.idx,
                 type: 'TEXT',
                 payload: newNode
@@ -26,7 +27,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patch[]) {
 
     // same vnode
     if (!sameVNode(oldNode, newNode)) {
-        patch.push({
+        currentPatch.push({
             index: idx.idx,
             type: 'REPLACE',
             payload: newNode
@@ -36,7 +37,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patch[]) {
 
     // same props
     if (!sameProps(oldNode.attr, newNode.attr)) {
-        patch.push({
+        currentPatch.push({
             index: idx.idx,
             type: 'PROPS',
             payload: newNode.attr
@@ -45,7 +46,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patch[]) {
 
     // textContent
     if (oldNode.text !== newNode.text) {
-        patch.push({
+        currentPatch.push({
             index: idx.idx,
             type: 'TEXT',
             payload: newNode.text
@@ -55,7 +56,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patch[]) {
     const childDiff = diffList(oldNode.children, newNode.children, 'key')
 
     if (childDiff.moves.length) {
-        patch.push({
+        currentPatch.push({
             index: idx.idx,
             type: 'REORDER',
             payload: childDiff.moves
@@ -68,6 +69,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patch[]) {
 
         if (!child) {
             idx.idx++
+            patch[idx.idx] = []
             continue
         }
         dfs(oldChild, child, idx, patch)
@@ -78,9 +80,15 @@ function sameVNode (node1: VNode, node2: VNode) {
     return node1.sel === node2.sel && node1.key === node2.key
 }
 
-function sameProps (node1: Attr, node2: Attr) {
-    for (let key of Object.keys(node2)) {
-        if (!node1[key] || node1[key] !== node2[key]) {
+// TODO: rewrite
+function sameProps (attr1: Attr, attr2: Attr) {
+    for (let key of Object.keys(attr2)) {
+        if (!attr1[key] || attr1[key] !== attr2[key]) {
+            return false
+        }
+    }
+    for (let key of Object.keys(attr1)) {
+        if (!attr2[key]) {
             return false
         }
     }

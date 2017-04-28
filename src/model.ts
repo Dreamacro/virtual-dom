@@ -17,6 +17,10 @@ export interface Patch {
     payload: VNode | string | Attr | Object[]
 }
 
+export interface Patchs {
+    [key: string]: Patch[]
+}
+
 export type Key = string | number
 
 export interface Index {
