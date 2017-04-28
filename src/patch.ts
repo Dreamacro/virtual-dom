@@ -1,4 +1,4 @@
-import { Patch, VNode, Index } from './model'
+import { Patch, VNode, Index, Attr } from './model'
 import { h } from './index'
 import * as DOMAPI from './dom'
 import * as util from './util'
@@ -68,7 +68,7 @@ function dfs (vnode: VNode, patchs: Patch[], index: Index, currIdx: Index) {
             }
             break 
         case "PROPS":
-            const newAttr = patch.payload as Object
+            const newAttr = patch.payload as Attr
             const oldAttr = vnode.attr
             const set = new Set([
                 ...Object.keys(newAttr),

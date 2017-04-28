@@ -78,7 +78,7 @@ function sameVNode (node1: VNode, node2: VNode) {
     return node1.sel === node2.sel && node1.key === node2.key
 }
 
-function sameProps (node1: Object, node2: Object) {
+function sameProps (node1: Attr, node2: Attr) {
     for (let key of Object.keys(node2)) {
         if (!node1[key] || node1[key] !== node2[key]) {
             return false
