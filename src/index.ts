@@ -2,16 +2,17 @@ import { VNode } from './model'
 import * as DOMAPI from './dom'
 import * as util from './util'
 
-export { el } from './vnode'
+export { dom } from './vnode'
 export { diff } from './diff'
 export { patch } from './patch'
+export * from './model'
 export function h (vnode: VNode): Node {
     if (vnode.el) {
         return vnode.el
     }
 
     if (vnode.sel === undefined) {
-        const textNode = DOMAPI.createTextNode(vnode.text)
+        const textNode = DOMAPI.createTextNode(vnode.text.toString())
         vnode.el = textNode
         return textNode
     }
@@ -26,17 +27,8 @@ export function h (vnode: VNode): Node {
     }
 
     // generator children
-    for (let i = 0; i < vnode.children.length; i ++) {
-        if (util.isString(vnode.children[i])) {
-            vnode.children[i] = {
-                sel: undefined,
-                key: vnode.children[i],
-                el: undefined,
-                text: vnode.children[i]
-            } as VNode
-        }
-        const child = vnode.children[i] as VNode
-        el.appendChild(h(child))
+    for (let child of vnode.children) {
+        el.appendChild(h(child as VNode))
     }
 
     // fix el

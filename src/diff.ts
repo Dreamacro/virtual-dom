@@ -10,46 +10,36 @@ export function diff (oldNode: VNode, newNode: VNode): Patchs {
     return patch
 }
 
-function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs) {
+function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs, skip = false) {
     idx.idx++
-    const currentPatch = patch[idx.idx] = []
-    // text node
-    if (util.isString(oldNode) && util.isString(newNode)) {
-        if (oldNode !== newNode) {
-            currentPatch.push({
-                index: idx.idx,
-                type: 'TEXT',
-                payload: newNode
-            })
+    const index = idx.idx
+    if (skip) {
+        for (let child of oldNode.children) {
+            dfs(child as VNode, null, idx, patch, true)
         }
         return
     }
 
     // same vnode
     if (!sameVNode(oldNode, newNode)) {
-        currentPatch.push({
-            index: idx.idx,
+        patch[index] = [{
+            index: index,
             type: 'REPLACE',
             payload: newNode
-        })
+        }]
+        for (let child of oldNode.children) {
+            dfs(child as VNode, null, idx, patch, true)
+        }
         return
     }
 
+    const currentPatch = []    
     // same props
     if (!sameProps(oldNode.attr, newNode.attr)) {
         currentPatch.push({
-            index: idx.idx,
+            index: index,
             type: 'PROPS',
             payload: newNode.attr
-        })
-    }
-
-    // textContent
-    if (oldNode.text !== newNode.text) {
-        currentPatch.push({
-            index: idx.idx,
-            type: 'TEXT',
-            payload: newNode.text
         })
     }
 
@@ -57,7 +47,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs) {
 
     if (childDiff.moves.length) {
         currentPatch.push({
-            index: idx.idx,
+            index: index,
             type: 'REORDER',
             payload: childDiff.moves
         })
@@ -67,12 +57,11 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs) {
         const oldChild = oldNode.children[i] as VNode
         const child = childDiff.children[i]
 
-        if (!child) {
-            idx.idx++
-            patch[idx.idx] = []
-            continue
-        }
-        dfs(oldChild, child, idx, patch)
+        dfs(oldChild, child, idx, patch, !child)
+    }
+
+    if (currentPatch.length) {
+        patch[index] = currentPatch
     }
 }
 

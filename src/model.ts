@@ -1,10 +1,10 @@
 export interface VNode {
     sel: string | undefined
-    attr?: Attr
+    attr: Attr
     key: Key
     children: Array<VNode | string>
     el: Node | undefined
-    text: string
+    text?: string
 }
 
 export interface Attr {
@@ -13,8 +13,8 @@ export interface Attr {
 
 export interface Patch {
     index: number
-    type: 'REPLACE' | 'TEXT' | 'PROPS' | 'REORDER',
-    payload: VNode | string | Attr | Object[]
+    type: 'REPLACE' | 'PROPS' | 'REORDER',
+    payload: VNode | Attr | Object[]
 }
 
 export interface Patchs {

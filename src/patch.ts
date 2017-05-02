@@ -9,38 +9,18 @@ export function patch (vnode: VNode, patchs: Patchs) {
 
 function dfs (vnode: VNode, patchs: Patchs, index: Index) {
     index.idx++
-
+    
     if (!vnode.el) {
         vnode.el = h(vnode)
     }
 
-    if (DOMAPI.isTextNode(vnode.el)) {
-        return
-    }
-
     const currPatch = patchs[index.idx]
     dfsChild(vnode.children as VNode[], patchs, index)
+    if (!currPatch) {
+        return
+    }
     for (let patch of currPatch) {
         switch (patch.type) {
-            case "REORDER":
-                const moves = patch.payload as Array<{}>
-                const back = Array.from(vnode.children)
-                moves.forEach((move: any) => {
-                    const node = vnode.children[move.index] as VNode
-                    if (move.type === 0) {
-                        // remove
-                        if (back[move.index] === node) {
-                            vnode.el.removeChild(node.el) 
-                        }
-                        vnode.children.splice(move.index, 1)
-                    } else {
-                        // insert new
-                        move.item.el = h(move.item)
-                        vnode.children.splice(move.index, 0, move.item)
-                        vnode.el.insertBefore(move.item.el, node ? node.el : null) 
-                    }
-                })
-                break
             case "REPLACE":
                 const newNode = patch.payload as VNode
                 if (!newNode.el) {
@@ -48,14 +28,22 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
                 }
                 vnode.el.parentNode.replaceChild(newNode.el, vnode.el)
                 break
-            case "TEXT":
-                const newText = patch.payload as string
-                if (vnode.el.textContent) {
-                    vnode.el.textContent = newText
-                } else {
-                    vnode.el.nodeValue = newText
+            case "REORDER":
+                const moves = patch.payload as Array<any>
+                for (let move of moves) {
+                    const node = vnode.children[move.index] as VNode
+                    if (move.type === 0) {
+                        // remove
+                        vnode.el.removeChild(node.el) 
+                        vnode.children.splice(move.index, 1)
+                    } else {
+                        // insert new
+                        move.item.el = h(move.item)
+                        vnode.el.insertBefore(move.item.el, node ? node.el : null)
+                        vnode.children.splice(move.index, 0, move.item)
+                    }
                 }
-                break 
+                break
             case "PROPS":
                 const newAttr = patch.payload as Attr
                 const oldAttr = vnode.attr

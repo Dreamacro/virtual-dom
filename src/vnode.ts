@@ -1,29 +1,34 @@
 import { VNode, Attr } from './model'
 import * as util from './util'
 
-export function el (sel: string): VNode
-export function el (sel: string, text: string): VNode
-export function el (sel: string, text: string, attr: Attr): VNode
-export function el (sel: string, children: Array<string | VNode>): VNode
-export function el (sel: string, attr: Attr, children: Array<string | VNode>): VNode
-export function el (sel: string, text: any = '', attr: any = {}, children: any = []): VNode {
-    if (util.isArray(text)) {
-        children = text
-        text = ''
-    } else if (util.isObject(text)) {
-        children = attr
-        attr = text
-        text = ''
+function flat (arr: any) {
+    const ret = []
+    for (let item of arr) {
+        util.isArray(item)
+            ? ret.push(...item)
+            : ret.push(item)
+    }
+    return ret
+}
+
+export function dom (sel: string, attr: Attr | null, ...children: Array<string | VNode>): VNode {
+    if (attr === null) {
+        attr = {}
     }
 
     const key = attr.key || sel
     delete attr.key
 
+    children = flat(children).map(
+        c => util.isString(c)
+            ? {key: c, children: [], attr: {}, text: c}
+            : c
+    )
+
     return {
         sel,
         attr,
         children,
-        text,
         key,
         el: undefined
     }
