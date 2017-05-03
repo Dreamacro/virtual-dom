@@ -2,7 +2,7 @@ export interface VNode {
     sel: string | undefined
     attr: Attr
     key: Key
-    children: Array<VNode | string>
+    children: VNode[]
     el: Node | undefined
     text?: string
 }

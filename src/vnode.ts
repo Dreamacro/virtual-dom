@@ -28,7 +28,7 @@ export function dom (sel: string, attr: Attr | null, ...children: Array<string |
     return {
         sel,
         attr,
-        children,
+        children: children as VNode[],
         key,
         el: undefined
     }

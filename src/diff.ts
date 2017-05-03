@@ -15,7 +15,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs, skip = 
     const index = idx.idx
     if (skip) {
         for (let child of oldNode.children) {
-            dfs(child as VNode, null, idx, patch, true)
+            dfs(child, null, idx, patch, true)
         }
         return
     }
@@ -28,7 +28,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs, skip = 
             payload: newNode
         }]
         for (let child of oldNode.children) {
-            dfs(child as VNode, null, idx, patch, true)
+            dfs(child, null, idx, patch, true)
         }
         return
     }
@@ -54,7 +54,7 @@ function dfs (oldNode: VNode, newNode: VNode, idx: Index, patch: Patchs, skip = 
     }
 
     for (let i = 0; i < childDiff.children.length; i++) {
-        const oldChild = oldNode.children[i] as VNode
+        const oldChild = oldNode.children[i]
         const child = childDiff.children[i]
 
         dfs(oldChild, child, idx, patch, !child)

@@ -28,7 +28,7 @@ export function h (vnode: VNode): Node {
 
     // generator children
     for (let child of vnode.children) {
-        el.appendChild(h(child as VNode))
+        el.appendChild(h(child))
     }
 
     // fix el

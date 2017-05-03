@@ -15,7 +15,7 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
     }
 
     const currPatch = patchs[index.idx]
-    dfsChild(vnode.children as VNode[], patchs, index)
+    dfsChild(vnode.children, patchs, index)
     if (!currPatch) {
         return
     }
@@ -31,7 +31,7 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
             case "REORDER":
                 const moves = patch.payload as Array<any>
                 for (let move of moves) {
-                    const node = vnode.children[move.index] as VNode
+                    const node = vnode.children[move.index]
                     if (move.type === 0) {
                         // remove
                         vnode.el.removeChild(node.el) 
