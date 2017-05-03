@@ -1,50 +1,66 @@
-import { h, dom, diff, patch } from '../src/index'
+import { h, dom, diff, patch, VNode } from '../src/index'
 
-const lis = Array.from({length: 10}).map(
-    (_, i) => <li key={i.toString()}>{i.toString()}</li>
-)
+interface Config {
+    sel: string
+    data: () => Object,
+    render: () => VNode,
+    init?: () => void
+}
 
-const root = (
-    <div class="test">
-        123
-        <p>p</p>
-        <ul>
-            { lis }
-        </ul>
-        <a href="/#test" class="link"></a>
-    </div>
-)
+function DDRender ({data: dataFn, render, sel, init = function () {}}: Config) {
+    const data = dataFn()
+    const el = document.querySelector(sel)
+    const keys = Object.keys(data)
+    const warp = {}
+    const genVNode = render.bind(warp)
 
-const newNode = list => (
-    <div class="container">
-        456
-        <div>
-            <span>p1</span>
-        </div>
-        <a href="/#test1" class="link"></a>
-        <ul class="ul">
-            { list }
-        </ul>
-    </div>
-)
+    Object.defineProperties(
+        warp,
+        keys.reduce((obj, key) => {
+            obj[key] = {
+                get () { return data[key] },
+                set (val) {
+                    data[key] = val
+                    reRender()
+                }
+            }
+            return obj
+        }, {})
+    )
 
-const app = h(root)
+    const vnode = genVNode()
+    function reRender () {
+        const newVNode = genVNode()
+        const df = diff(vnode, newVNode)
+        patch(vnode, df)
+    }
+    this.$data = warp
+    el.appendChild(h(vnode))
+    init.call(warp)
+}
 
-const newlis = Array.from(lis)
-;[newlis[9], newlis[8]] = [newlis[8], newlis[9]]
-const df = diff(root, newNode(newlis))
-patch(root, df)
-// console.log(JSON.stringify(df, null, 4))
-
-let count = 0
-const l = Array.from({length: 4}).map((_, i) => i*i)
-
-setInterval(() => {
-    const list = [count++, ...l]
-        .sort((a, b) => a - b)
-        .map((v, i) => <li key={i.toString()}>{v.toString()}</li>)
-    const df = diff(root, newNode(list))
-    patch(root, df)
-}, 1000)
-
-document.body.appendChild(app)
+const app = new DDRender({
+    sel: 'body',
+    data () {
+        return {
+            data: []
+        }
+    },
+    init () {
+        let count = 0
+        const data = [1, 4, 9, 16]
+        setInterval(() => {
+            this.data = [count++, ...data].sort((a, b) => a - b)
+        }, 1000)
+    },
+    render () {
+        const lis = this.data.map(
+            (v, i) => <li key={i.toString()}>{v.toString()}</li>
+        )
+        return (
+            <ul>
+                { lis }
+            </ul>
+        )
+    }
+})
