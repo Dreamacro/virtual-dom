@@ -11,7 +11,7 @@ function flat (arr: any) {
     return ret
 }
 
-export function dom (sel: string, attr: Attr | null, ...children: Array<string | VNode>): VNode {
+export function h (sel: string, attr: Attr | null, ...children: Array<string | VNode>): VNode {
     if (attr === null) {
         attr = {}
     }
@@ -33,4 +33,3 @@ export function dom (sel: string, attr: Attr | null, ...children: Array<string |
         el: undefined
     }
 }
-

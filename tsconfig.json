@@ -3,6 +3,6 @@
         "target": "es2015",
         "module": "commonjs",
         "jsx": "react",
-        "jsxFactory": "dom"
+        "jsxFactory": "h"
     }
 }

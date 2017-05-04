@@ -1,4 +1,4 @@
-import { h, dom, diff, patch, VNode } from '../src/index'
+import { render as r, h, diff, patch, VNode } from '../src/index'
 
 interface Config {
     sel: string
@@ -9,34 +9,34 @@ interface Config {
 
 function DDRender ({data: dataFn, render, sel, init = function () {}}: Config) {
     const data = dataFn()
-    const el = document.querySelector(sel)
-    const keys = Object.keys(data)
-    const warp = {}
-    const genVNode = render.bind(warp)
+    this.$data = Object.create(null)
+    this._genVNode = render.bind(this.$data)
+    const ctx = this
 
+    const keys = Object.keys(data)
     Object.defineProperties(
-        warp,
+        this.$data,
         keys.reduce((obj, key) => {
             obj[key] = {
                 get () { return data[key] },
                 set (val) {
                     data[key] = val
-                    reRender()
+                    ctx._reRender()
                 }
             }
             return obj
         }, {})
     )
 
-    const vnode = genVNode()
-    function reRender () {
-        const newVNode = genVNode()
-        const df = diff(vnode, newVNode)
-        patch(vnode, df)
-    }
-    this.$data = warp
-    el.appendChild(h(vnode))
-    init.call(warp)
+    this.$vnode = this._genVNode()
+    this.$el = r(this.$vnode)
+    init.call(this.$data)
+}
+
+DDRender.prototype._reRender = function () {
+    const newVNode = this._genVNode()
+    const df = diff(this.$vnode, newVNode)
+    patch(this.$vnode, df)
 }
 
 const app = new DDRender({
@@ -64,3 +64,5 @@ const app = new DDRender({
         )
     }
 })
+
+document.body.appendChild(app.$el)

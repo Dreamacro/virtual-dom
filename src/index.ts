@@ -2,11 +2,11 @@ import { VNode } from './model'
 import * as DOMAPI from './dom'
 import * as util from './util'
 
-export { dom } from './vnode'
+export { h } from './vnode'
 export { diff } from './diff'
 export { patch } from './patch'
 export * from './model'
-export function h (vnode: VNode): Node {
+export function render (vnode: VNode): Node {
     if (vnode.el) {
         return vnode.el
     }
@@ -28,7 +28,7 @@ export function h (vnode: VNode): Node {
 
     // generator children
     for (let child of vnode.children) {
-        el.appendChild(h(child))
+        el.appendChild(render(child))
     }
 
     // fix el

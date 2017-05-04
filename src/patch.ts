@@ -1,5 +1,5 @@
 import { Patchs, VNode, Index, Attr } from './model'
-import { h } from './index'
+import { render } from './index'
 import * as DOMAPI from './dom'
 import * as util from './util'
 
@@ -11,7 +11,7 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
     index.idx++
     
     if (!vnode.el) {
-        vnode.el = h(vnode)
+        vnode.el = render(vnode)
     }
 
     const currPatch = patchs[index.idx]
@@ -24,7 +24,7 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
             case "REPLACE":
                 const newNode = patch.payload as VNode
                 if (!newNode.el) {
-                    newNode.el = h(newNode)
+                    newNode.el = render(newNode)
                 }
                 vnode.el.parentNode.replaceChild(newNode.el, vnode.el)
                 break
@@ -38,7 +38,7 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
                         vnode.children.splice(move.index, 1)
                     } else {
                         // insert new
-                        move.item.el = h(move.item)
+                        move.item.el = render(move.item)
                         vnode.el.insertBefore(move.item.el, node ? node.el : null)
                         vnode.children.splice(move.index, 0, move.item)
                     }
