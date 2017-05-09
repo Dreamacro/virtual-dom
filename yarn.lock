@@ -119,17 +119,17 @@ asynckit@^0.4.0:
   version "0.4.0"
   resolved "http://registry.npm.taobao.org/asynckit/download/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
 
-awesome-typescript-loader@^3.1.2:
-  version "3.1.2"
-  resolved "http://registry.npm.taobao.org/awesome-typescript-loader/download/awesome-typescript-loader-3.1.2.tgz#3df192b91a6285f795ca65e63aad114fbb44f710"
+awesome-typescript-loader@^3.1.3:
+  version "3.1.3"
+  resolved "http://registry.npm.taobao.org/awesome-typescript-loader/download/awesome-typescript-loader-3.1.3.tgz#7eb41dfb136c2ea0e099bef038dc70c45f810223"
   dependencies:
     colors "^1.1.2"
     enhanced-resolve "^3.1.0"
-    loader-utils "^1.0.2"
+    loader-utils "^1.1.0"
     lodash "^4.17.4"
     mkdirp "^0.5.1"
     object-assign "^4.1.1"
-    source-map-support "^0.4.11"
+    source-map-support "^0.4.15"
 
 aws-sign2@~0.6.0:
   version "0.6.0"
@@ -930,7 +930,7 @@ loader-utils@^0.2.16:
     json5 "^0.5.0"
     object-assign "^4.0.1"
 
-loader-utils@^1.0.2:
+loader-utils@^1.1.0:
   version "1.1.0"
   resolved "http://registry.npm.taobao.org/loader-utils/download/loader-utils-1.1.0.tgz#c98aef488bcceda2ffb5e2de646d6a754429f5cd"
   dependencies:
@@ -1434,9 +1434,9 @@ source-list-map@^1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/source-list-map/download/source-list-map-1.1.1.tgz#1a33ac210ca144d1e561f906ebccab5669ff4cb4"
 
-source-map-support@^0.4.11:
-  version "0.4.14"
-  resolved "http://registry.npm.taobao.org/source-map-support/download/source-map-support-0.4.14.tgz#9d4463772598b86271b4f523f6c1f4e02a7d6aef"
+source-map-support@^0.4.15:
+  version "0.4.15"
+  resolved "http://registry.npm.taobao.org/source-map-support/download/source-map-support-0.4.15.tgz#03202df65c06d2bd8c7ec2362a193056fef8d3b1"
   dependencies:
     source-map "^0.5.6"
 
@@ -1589,9 +1589,9 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "http://registry.npm.taobao.org/tweetnacl/download/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
 
-typescript@^2.2.2:
-  version "2.2.2"
-  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.2.2.tgz#606022508479b55ffa368b58fee963a03dfd7b0c"
+typescript@^2.3.2:
+  version "2.3.2"
+  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.3.2.tgz#f0f045e196f69a72f06b25fd3bd39d01c3ce9984"
 
 uglify-js@^2.8.5:
   version "2.8.22"
@@ -1665,9 +1665,9 @@ webpack-sources@^0.2.3:
     source-list-map "^1.1.1"
     source-map "~0.5.3"
 
-webpack@^2.4.1:
-  version "2.4.1"
-  resolved "http://registry.npm.taobao.org/webpack/download/webpack-2.4.1.tgz#15a91dbe34966d8a4b99c7d656efd92a2e5a6f6a"
+webpack@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.npmjs.org/webpack/-/webpack-2.5.1.tgz#61742f0cf8af555b87460a9cd8bba2f1e3ee2fce"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"
