@@ -4,6 +4,9 @@ export interface VNode {
     key: Key
     children: VNode[]
     el: Node | undefined
+    events: {
+        [key: string]: Function
+    }
     text?: string
 }
 

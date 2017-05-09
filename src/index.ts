@@ -6,6 +6,28 @@ export { h } from './vnode'
 export { diff } from './diff'
 export { patch } from './patch'
 export * from './model'
+
+// init element after render
+export function init (vnode: VNode) {
+    if (!vnode.el) {
+        throw Error('VNode not render')
+    }
+
+    for (let event of Object.keys(vnode.events)) {
+        vnode.el.addEventListener(event, vnode.events[event] as EventListener)
+    }
+}
+
+export function destroy (vnode: VNode) {
+    if (!vnode.el) {
+        throw Error('VNode not render')
+    }
+
+    for (let event of Object.keys(vnode.events)) {
+        vnode.el.removeEventListener(event, vnode.events[event] as EventListener)
+    }
+}
+
 export function render (vnode: VNode): Node {
     if (vnode.el) {
         return vnode.el
@@ -33,6 +55,7 @@ export function render (vnode: VNode): Node {
 
     // fix el
     vnode.el = el
+    init(vnode)
 
     return el
 }

@@ -1,5 +1,5 @@
 import { Patchs, VNode, Index, Attr } from './model'
-import { render } from './index'
+import { render, destroy, init } from './index'
 import * as DOMAPI from './dom'
 import * as util from './util'
 
@@ -25,6 +25,7 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
                 const newNode = patch.payload as VNode
                 if (!newNode.el) {
                     newNode.el = render(newNode)
+                    init(newNode)
                 }
                 vnode.el.parentNode.replaceChild(newNode.el, vnode.el)
                 break
@@ -34,11 +35,15 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
                     const node = vnode.children[move.index]
                     if (move.type === 0) {
                         // remove
+                        destroy(node)
                         vnode.el.removeChild(node.el) 
                         vnode.children.splice(move.index, 1)
                     } else {
                         // insert new
-                        move.item.el = render(move.item)
+                        if (!move.item.el) {
+                            move.item.el = render(move.item)
+                            init(move.item)
+                        }
                         vnode.el.insertBefore(move.item.el, node ? node.el : null)
                         vnode.children.splice(move.index, 0, move.item)
                     }

@@ -19,9 +19,19 @@ export function h (sel: string, attr: Attr | null, ...children: Array<string | V
     const key = attr.key || sel
     delete attr.key
 
+    const events = {}
+    for (let key of Object.keys(attr)) {
+        // e.g. onClick
+        if (/^on[A-Z][A-Za-z]+$/.test(key)) {
+            const eventName = key.substring(2).toLowerCase()
+            events[eventName] = attr[key]
+            delete attr[key]
+        }
+    }
+
     children = flat(children).map(
         c => util.isString(c)
-            ? {key: c, children: [], attr: {}, text: c}
+            ? {key: c, children: [], attr: {}, text: c, events: {}}
             : c
     )
 
@@ -30,6 +40,7 @@ export function h (sel: string, attr: Attr | null, ...children: Array<string | V
         attr,
         children: children as VNode[],
         key,
+        events,
         el: undefined
     }
 }
