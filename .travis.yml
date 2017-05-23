@@ -4,6 +4,10 @@ cache:
   yarn: true
   directories:
     - node_modules
+addons:
+  apt:
+    packages:
+      - google-chrome-beta
 before_script:
   - yarn
 script:
