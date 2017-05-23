@@ -7,12 +7,13 @@ cache:
   directories:
     - node_modules
 addons:
-  apt:
-    packages:
-      - google-chrome-beta
-env:
-  - CHROME_BIN=/usr/bin/google-chrome-beta
+   apt:
+      sources:
+         - google-chrome
+      packages:
+         - google-chrome-stable
 before_script:
   - yarn
+  - google-chrome --version
 script:
   - yarn run test
