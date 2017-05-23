@@ -27,7 +27,10 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
                     newNode.el = render(newNode)
                     init(newNode)
                 }
-                vnode.el.parentNode.replaceChild(newNode.el, vnode.el)
+                if (vnode.el.parentNode) {
+                    vnode.el.parentNode.replaceChild(newNode.el, vnode.el)
+                }
+                VNodeCopy(vnode, newNode)
                 break
             case "REORDER":
                 const moves = patch.payload as Array<any>
@@ -72,5 +75,11 @@ function dfs (vnode: VNode, patchs: Patchs, index: Index) {
 function dfsChild (children: VNode[], patchs: Patchs, index: Index) {
     for (let child of children) {
         dfs(child, patchs, index)
+    }
+}
+
+function VNodeCopy (oldNode: VNode, newNode: VNode) {
+    for (let key of Object.keys(oldNode)) {
+        oldNode[key] = newNode[key]
     }
 }
