@@ -10,6 +10,8 @@ addons:
   apt:
     packages:
       - google-chrome-beta
+env:
+  - CHROME_BIN=/usr/bin/google-chrome-beta
 before_script:
   - yarn
 script:
