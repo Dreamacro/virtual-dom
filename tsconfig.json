@@ -3,6 +3,9 @@
         "target": "es2015",
         "module": "commonjs",
         "jsx": "react",
-        "jsxFactory": "h"
+        "jsxFactory": "h",
+        "types": [
+            "jasmine"
+        ]
     }
 }
