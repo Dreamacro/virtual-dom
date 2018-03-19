@@ -10,8 +10,8 @@ module.exports = config => {
         ],
 
         preprocessors: {
-            './src/**/*.ts': ['webpack'],            
-            './test/**/*.tsx': ['webpack'],
+            './src/**/*.ts': ['webpack', 'sourcemap'],            
+            './test/**/*.tsx': ['webpack', 'sourcemap'],
         },
 
         reporters: ['spec'],
