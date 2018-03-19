@@ -1,4 +1,4 @@
-import { render as r, h, diff, patch, VNode } from '../src/index'
+import { render as r, h, patch, VNode } from '../src/index'
 
 interface Config {
     sel: string
@@ -35,22 +35,23 @@ function DDRender ({data: dataFn, render, sel, init = function () {}}: Config) {
 
 DDRender.prototype._reRender = function () {
     const newVNode = this._genVNode()
-    const df = diff(this.$vnode, newVNode)
-    patch(this.$vnode, df)
+    patch(this.$vnode, newVNode)
+    this.$vnode = newVNode
 }
+
+const randonRange = (s, e) => Math.floor(Math.random() * (e - s)) + s
 
 const app = new DDRender({
     sel: 'body',
     data () {
         return {
-            data: []
+            data: [1, 4, 9, 16]
         }
     },
     init () {
-        let count = 0
-        const data = [1, 4, 9, 16]
         setInterval(() => {
-            this.data = [count++, ...data].sort((a, b) => a - b)
+            this.data[randonRange(0, 3)]++
+            this.data = [...this.data]
         }, 1000)
     },
     render () {

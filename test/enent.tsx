@@ -1,4 +1,4 @@
-import { h, VNode, render, diff, patch } from '../src/index'
+import { h, VNode, render, patch } from '../src/index'
 
 describe('event', () => {
     it('can emit click event handler', () => {
@@ -27,8 +27,7 @@ describe('event', () => {
         el.click()
         expect(ret.length).toBe(1)
 
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
+        patch(vnode, newNode)
         const newEL = vnode.el as HTMLElement
         newEL.click()
         expect(ret.length).toBe(1)        

@@ -1,4 +1,4 @@
-import { h, VNode, render, diff, patch } from '../src/index'
+import { h, VNode, render, patch } from '../src/index'
 
 describe('diff and patch', () => {
     it('can replace root element', () => {
@@ -12,9 +12,8 @@ describe('diff and patch', () => {
         const el = render(vnode)
         expect(el.nodeName.toLowerCase()).toBe('div')
 
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
-        const newEl = vnode.el
+        patch(vnode, newNode)
+        const newEl = newNode.el
         expect(newEl.nodeName.toLowerCase()).toBe('p')
     })
 
@@ -32,12 +31,10 @@ describe('diff and patch', () => {
         const el = render(vnode)
         expect(el.nodeName.toLowerCase()).toBe('div')
 
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
-        const newEl = vnode.el
+        patch(vnode, newNode)
+        const newEl = newNode.el
         expect(newEl.nodeName.toLowerCase()).toBe('ul')
         expect(newEl.childNodes.length).toBe(2)
-        expect(vnode).toEqual(newNode)
     })
 
     it('can patch attributes', () => {
@@ -49,8 +46,7 @@ describe('diff and patch', () => {
         ) as VNode
 
         const el = render(vnode)
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
+        patch(vnode, newNode)
 
         const newEl = vnode.el as HTMLElement
         expect(newEl.getAttribute('class')).toBe('new-div')
@@ -81,8 +77,7 @@ describe('diff and patch', () => {
         expect(el.childNodes[2].nodeName.toLowerCase()).toBe('ul')
         expect(el.childNodes[3].nodeName.toLowerCase()).toBe('a')
 
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
+        patch(vnode, newNode)
 
         const newEl = vnode.el
         expect(el.childNodes.length).toBe(2)
@@ -115,8 +110,7 @@ describe('diff and patch', () => {
         expect(el.childNodes[2].nodeName.toLowerCase()).toBe('ul')
         expect(el.childNodes[3].nodeName.toLowerCase()).toBe('a')
 
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
+        patch(vnode, newNode)
 
         const newEl = vnode.el
         expect(el.childNodes.length).toBe(4)
@@ -143,8 +137,7 @@ describe('diff and patch', () => {
         ) as VNode
 
         const el = render(vnode)
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
+        patch(vnode, newNode)
 
         const newEl = vnode.el
         expect(newEl.childNodes[1].nodeName.toLowerCase()).toBe('span')
@@ -164,8 +157,7 @@ describe('diff and patch', () => {
         ) as VNode
 
         const el = render(vnode)
-        const df = diff(vnode, newNode)
-        patch(vnode, df)
+        patch(vnode, newNode)
 
         const newEl = vnode.el
         const reverseChild = Array.from(newEl.childNodes).map(el => parseInt(el.textContent))

@@ -3,7 +3,6 @@ import * as DOMAPI from './dom'
 import * as util from './util'
 
 export { h } from './vnode'
-export { diff } from './diff'
 export { patch } from './patch'
 export * from './model'
 
